@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block title %}GiftTracker - Create Wishlist{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="text-center">Create a New Wishlist</h2>
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <form method="POST" action="{{ url_for('wishlist.create_wishlist') }}">
+                {{ form.hidden_tag() }}
+
+                <!-- Wishlist Name -->
+                <div class="mb-3">
+                    {{ form.name.label(class="form-label") }}
+                    {{ form.name(class="form-control", placeholder="Enter wishlist name") }}
+                    {% if form.name.errors %}
+                        <div class="text-danger">{{ form.name.errors[0] }}</div>
+                    {% endif %}
+                </div>
+
+                <!-- Submit -->
+                <button type="submit" class="btn btn-primary w-100">Create Wishlist</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Return to dashboard -->
+    <div class="text-center mt-4">
+        <a href="{{ url_for('wishlist.dashboard') }}" class="btn btn-secondary">Back to Dashboard</a>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block title %}GiftTracker - Log In{% endblock %}
+
+{% block content %}
+<!-- Styling -->
+<div class="bg-darkgreen d-flex align-items-center justify-content-center" style="height: 100vh;">
+    <div class="card shadow-sm" style="width: 20rem;">
+        <div class="card-body">
+            <h5 class="card-title text-center mb-4">Log In</h5>
+            <form method="POST" action="{{ url_for('auth.login') }}">
+                {{ form.hidden_tag() }}
+
+                <!-- Username -->
+                <div class="mb-3">
+                    {{ form.username.label(class="form-label") }}
+                    {{ form.username(class="form-control", placeholder="Enter username") }}
+                    {% if form.username.errors %}
+                        <div class="text-danger">{{ form.username.errors[0] }}</div>
+                    {% endif %}
+                </div>
+
+                <!-- Password -->
+                <div class="mb-3">
+                    {{ form.password.label(class="form-label") }}
+                    {{ form.password(class="form-control", placeholder="Enter password") }}
+                    {% if form.password.errors %}
+                        <div class="text-danger">{{ form.password.errors[0] }}</div>
+                    {% endif %}
+                </div>
+
+                <!-- Log In Button -->
+                <button type="submit" class="btn btn-success w-100">Log In</button>
+            </form>
+
+            <!-- Link to register -->
+            <div class="text-center mt-3">
+                <small>Don’t have an account? <a href="{{ url_for('auth.register') }}">Register here</a>.</small>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

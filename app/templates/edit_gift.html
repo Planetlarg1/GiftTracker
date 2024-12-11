@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+
+{% block title %}GiftTracker - Edit Gift{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="text-center">Edit Gift</h2>
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <form method="POST" action="{{ url_for('gifts.edit_gift', gift_id=gift.id) }}">
+                {{ form.hidden_tag() }}
+
+                <!-- Name -->
+                <div class="mb-3">
+                    {{ form.name.label(class="form-label") }}
+                    {{ form.name(class="form-control", placeholder="Enter gift name") }}
+                    {% if form.name.errors %}
+                        <div class="text-danger">{{ form.name.errors[0] }}</div>
+                    {% endif %}
+                </div>
+
+                <!-- Price -->
+                <div class="mb-3">
+                    {{ form.price.label(class="form-label") }}
+                    {{ form.price(class="form-control", placeholder="Enter gift price") }}
+                    {% if form.price.errors %}
+                        <div class="text-danger">{{ form.price.errors[0] }}</div>
+                    {% endif %}
+                </div>
+
+                <!-- Link -->
+                <div class="mb-3">
+                    {{ form.link.label(class="form-label") }}
+                    {{ form.link(class="form-control", placeholder="Enter gift link (optional)") }}
+                    {% if form.link.errors %}
+                        <div class="text-danger">{{ form.link.errors[0] }}</div>
+                    {% endif %}
+                </div>
+
+                <!-- Description -->
+                <div class="mb-3">
+                    {{ form.description.label(class="form-label") }}
+                    {{ form.description(class="form-control", placeholder="Enter gift description (optional)") }}
+                    {% if form.description.errors %}
+                        <div class="text-danger">{{ form.description.errors[0] }}</div>
+                    {% endif %}
+                </div>
+
+                <!-- Priority -->
+                <div class="mb-3">
+                    {{ form.priority.label(class="form-label") }}
+                    {{ form.priority(class="form-select") }}
+                    {% if form.priority.errors %}
+                        <div class="text-danger">{{ form.priority.errors[0] }}</div>
+                    {% endif %}
+                </div>
+
+                <!-- Submit -->
+                <button type="submit" class="btn btn-primary w-100">Update Gift</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Return to wishlist -->
+    <div class="text-center mt-4">
+        <a href="{{ url_for('wishlist.view_wishlist', wishlist_id=gift.wishlist_id) }}" class="btn btn-secondary">Back to Wishlist</a>
+    </div>
+</div>
+{% endblock %}

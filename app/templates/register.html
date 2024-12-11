@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+
+{% block title %}GiftTracker - Register{% endblock %}
+
+{% block content %}
+<!-- Styling -->
+<div class="bg-darkgreen d-flex align-items-center justify-content-center" style="height: 100vh;">
+    <div class="card shadow-sm" style="width: 25rem;">
+        <div class="card-body">
+            <h5 class="card-title text-center mb-4">Register</h5>
+            <form method="POST" action="{{ url_for('auth.register') }}">
+                {{ form.hidden_tag() }}
+
+                <!-- Username -->
+                <div class="mb-3">
+                    {{ form.username.label(class="form-label") }}
+                    {{ form.username(class="form-control", placeholder="Enter username") }}
+                    {% if form.username.errors %}
+                        <div class="text-danger">{{ form.username.errors[0] }}</div>
+                    {% endif %}
+                </div>
+
+                <!-- Password -->
+                <div class="mb-3">
+                    {{ form.password.label(class="form-label") }}
+                    {{ form.password(class="form-control", placeholder="Enter password") }}
+                    {% if form.password.errors %}
+                        <div class="text-danger">{{ form.password.errors[0] }}</div>
+                    {% endif %}
+                </div>
+
+                <!-- Confirm Password -->
+                <div class="mb-3">
+                    {{ form.confirm_password.label(class="form-label") }}
+                    {{ form.confirm_password(class="form-control", placeholder="Confirm password") }}
+                    {% if form.confirm_password.errors %}
+                        <div class="text-danger">{{ form.confirm_password.errors[0] }}</div>
+                    {% endif %}
+                </div>
+
+                <!-- Create Family -->
+                <h6 class="text-center mt-4">Create a Family</h6>
+                {{ create_form.hidden_tag() }}
+                <div class="mb-3">
+                    {{ create_form.name.label(class="form-label") }}
+                    {{ create_form.name(class="form-control", placeholder="Enter family name") }}
+                    {% if create_form.name.errors %}
+                        <div class="text-danger">{{ create_form.name.errors[0] }}</div>
+                    {% endif %}
+                </div>
+                <button name="create_family" type="submit" class="btn btn-primary w-100 mb-3">Create Family</button>
+
+                <!-- Join Family -->
+                <h6 class="text-center">Or Join an Existing Family</h6>
+                {{ join_form.hidden_tag() }}
+                <div class="mb-3">
+                    {{ join_form.join_code.label(class="form-label") }}
+                    {{ join_form.join_code(class="form-control", placeholder="Enter join code") }}
+                    {% if join_form.join_code.errors %}
+                        <div class="text-danger">{{ join_form.join_code.errors[0] }}</div>
+                    {% endif %}
+                </div>
+                <button name="join_family" type="submit" class="btn btn-secondary w-100">Join Family</button>
+            </form>
+
+            <!-- Link to log in-->
+            <div class="text-center mt-3">
+                <small>Already have an account? <a href="{{ url_for('auth.login') }}">Log in here</a>.</small>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

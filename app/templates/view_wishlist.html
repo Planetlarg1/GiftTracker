@@ -1,0 +1,117 @@
+{% extends "base.html" %}
+
+{% block title %}GiftTracker - View Wishlist{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1 class="text-center">{{ wishlist.name }}</h1>
+    <!-- Collaborators Section -->
+    <div class="card mb-4">
+        <div class="card-body">
+            <h5 class="card-title">Collaborators</h5>
+            <ul class="list-group">
+                {% for collaborator in wishlist.collaborators %}
+                <li class="list-group-item">{{ collaborator.username }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+
+    <!-- Add Collaborator Form -->
+    {% if is_collaborator %}
+        {% if not all_added %}
+        <div class="card mb-4">
+            <div class="card-body">
+                <h5 class="card-title">Add Collaborator</h5>
+                <form method="POST" action="{{ url_for('wishlist.view_wishlist', wishlist_id=wishlist.id) }}">
+                    {{ add_collaborator_form.hidden_tag() }}
+                    <div class="mb-3">
+                        {{ add_collaborator_form.collaborator.label(class="form-label") }}
+                        {{ add_collaborator_form.collaborator(class="form-select") }}
+                    </div>
+                    <button type="submit" class="btn btn-primary">Add Collaborator</button>
+                </form>
+            </div>
+        </div>
+        {% endif %}
+    {% endif %}
+
+    <!-- Filters -->
+    {% if not is_collaborator %}
+    <div class="d-flex justify-content-center mb-4">
+        <a href="{{ url_for('wishlist.view_wishlist', wishlist_id=wishlist.id, filter='all') }}" 
+           class="btn {% if filter_option == 'all' %}btn-secondary{% else %}btn-primary{% endif %} mx-1">All</a>
+        <a href="{{ url_for('wishlist.view_wishlist', wishlist_id=wishlist.id, filter='bought') }}" 
+           class="btn {% if filter_option == 'bought' %}btn-secondary{% else %}btn-primary{% endif %} mx-1">Bought</a>
+        <a href="{{ url_for('wishlist.view_wishlist', wishlist_id=wishlist.id, filter='to_buy') }}" 
+           class="btn {% if filter_option == 'to_buy' %}btn-secondary{% else %}btn-primary{% endif %} mx-1">To Buy</a>
+    </div>
+    {% endif %}
+
+    <!-- Gift List -->
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">Gifts</h5>
+            {% if gifts %}
+            <ul class="list-group">
+                {% for gift in gifts %}
+                <li class="list-group-item">
+                    <!-- Details -->
+                    <div class="mb-3">
+                        <strong>Name:</strong> {{ gift.name }}
+                    </div>
+                    <div class="mb-3">
+                        <strong>Price:</strong> ${{ "{:.2f}".format(gift.price) }}
+                    </div>
+                    {% if gift.link %}
+                    <div class="mb-3">
+                        <strong>Link:</strong> <a href="{{ gift.link }}" target="_blank" clas>{{ gift.link }}</a>
+                    </div>
+                    {% endif %}
+                    {% if gift.description %}
+                    <div class="mb-3">
+                        <p><strong>Description:</strong> {{ gift.description }}</p>
+                    </div>
+                    {% endif %}
+                    <div class="mb-3">
+                        <span class="badge bg-warning text-dark">Priority: {{ gift.priority }}</span>
+                    </div>
+                        <div class="d-flex gap-2">
+                        <!-- Bought status toggle button -->
+                        {% if not is_collaborator %}
+                        <a href="{{ url_for('gifts.toggle_gift', gift_id=gift.id) }}" class="btn btn-sm {% if gift.bought %}btn-success{% else %}btn-outline-success{% endif %}">
+                            {% if gift.bought %}Bought{% else %}To Buy{% endif %}
+                        </a>
+                        {% endif %}
+                        
+                        <!-- Edit and Delete buttons -->
+                        {% if is_collaborator %}
+                        <a href="{{ url_for('gifts.edit_gift', gift_id=gift.id) }}" class="btn btn-sm btn-warning">Edit</a>
+                        <a href="{{ url_for('gifts.delete_gift', gift_id=gift.id) }}" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure you want to delete this gift?')">Delete</a>
+                        {% endif %}
+                    </div>
+                </li>
+                {% endfor %}
+            </ul>
+            <!-- Empty wishlist -->
+            {% else %}
+            <p class="text-center text-muted">No gifts available.</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Button Container -->
+    <div class="d-flex justify-content-center mt-4">
+        <!-- Add Gift Button -->
+        {% if is_collaborator %}
+        <a href="{{ url_for('gifts.add_gift', wishlist_id=wishlist.id) }}" class="btn btn-primary mx-2">Add Gift</a>
+        
+        <!-- Delete Wishlist Button -->
+        <a href="{{ url_for('wishlist.delete_wishlist', wishlist_id=wishlist.id) }}" class="btn btn-danger mx-2" onclick="return confirm('Are you sure you want to delete this wishlist?')">Delete Wishlist</a>
+        {% endif %}
+
+        <!-- Return to Dashboard Button -->
+        <a href="{{ url_for('wishlist.dashboard') }}" class="btn btn-secondary mx-2">Back to Dashboard</a>
+    </div>
+</div>
+{% endblock %}

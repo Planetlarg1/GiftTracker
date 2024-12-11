@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block title %}GiftTracker - Dashboard{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1 class="text-center">GiftTracker</h1>
+
+    <!-- Family Information -->
+    <div class="card mb-4">
+        <div class="card-body">
+            <h5 class="card-title">Family: {{ family.name }}</h5>
+            <p class="card-text">Join Code: <span style="color: red;">{{ family.join_code }}</span></p>
+        </div>
+    </div>
+
+    <!-- Display Wishlists under User Headers -->
+    {% for username, wishlists in wishlists_grouped.items() %}
+    <div class="card mb-3">
+        <div class="card-header text-center text-white">
+            {{ username }}'s Wishlists
+        </div>
+        <ul class="list-group list-group-flush">
+            {% if wishlists|length == 0 %}
+                <p class="text-center text-muted">No wishlists found</p>
+            {% else %}
+                {% for wishlist in wishlists %}
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <a href="{{ url_for('wishlist.view_wishlist', wishlist_id=wishlist.id) }}" class="btn btn-outline-danger mx-2 wishlist-link">
+                        {{ wishlist.name }}
+                    </a>
+                    {% if current_user in wishlist.collaborators %}
+                    <span class="badge bg-success">Collaborator</span>
+                    {% endif %}
+                </li>
+            {% endfor %}
+            {% endif %}
+        </ul>
+    </div>
+    {% endfor %}
+
+    <!-- Add Wishlist Button -->
+    <div class="text-center mt-4">
+        <a href="{{ url_for('wishlist.create_wishlist') }}" class="btn btn-primary">Create New Wishlist</a>
+    </div>
+</div>
+{% endblock %}
