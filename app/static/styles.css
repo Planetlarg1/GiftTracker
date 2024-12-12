@@ -142,16 +142,6 @@ p, small {
     color: #721c24; 
 }
 
-/* Footer */
-footer {
-    background-color: #004643;
-    color: white;
-    text-align: center;
-    padding: 1rem;
-    margin-top: 2rem;
-    border-top: 2px solid gold;
-}
-
 /* Align and Spacing Enhancements */
 .container {
     max-width: 960px;
